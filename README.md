@@ -10,7 +10,7 @@ design-pattern-backend/
 ├── pattern_recommender.py  # Lógica de recomendação usando Gemini API
 ├── ask.py                  # Interface de linha de comando
 ├── requirements.txt        # Dependências Python
-└── README.md              # Documentação do projeto
+└── README.md               # Documentação do projeto
 ```
 
 ## Requisitos
