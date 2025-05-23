@@ -12,7 +12,7 @@ Este sistema utiliza Inteligência Artificial para analisar casos de uso e recom
 ## 🏗️ Estrutura do Projeto
 
 ```
-design-pattern-backend/
+design-pattern-cli/
 ├── pattern_recommender.py  # Lógica de recomendação usando Gemini API
 ├── ask.py                  # Interface de linha de comando
 ├── requirements.txt        # Dependências Python
@@ -30,7 +30,7 @@ design-pattern-backend/
 
 1. Clone o repositório:
 ```bash
-git clone https://github.com/seu-usuario/design-pattern-cli.git
+git clone https://github.com/dgomp/design-pattern-cli.git
 cd design-pattern-cli
 ```
 
