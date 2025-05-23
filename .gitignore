@@ -1,0 +1,69 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual Environment
+venv/
+ENV/
+
+# Environment Variables
+.env
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Outros
+*.bak
+*.swp
+*.swo
+
+# Arquivos de credenciais
+*.key
+*.pem
+
+# Arquivos de cache
+.cache/
+.npm/
+
+# Arquivos temporários
+*.tmp
+*.temp
+
+# Arquivos do PyCharm
+.idea/
+
+# Arquivos do Windows
+*.lnk
+
+# Arquivos de lock do npm/yarn
+frontend/package-lock.json
+frontend/yarn.lock 
