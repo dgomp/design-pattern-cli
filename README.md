@@ -39,7 +39,7 @@ cd design-pattern-cli
 GOOGLE_API_KEY=sua_chave_aqui
 ```
 
-3. Gere sua API Key [aqui](https://makersuite.google.com/app/apikey) (clique em *Criar chave de API*).
+3. Gere sua API Key [aqui](https://makersuite.google.com/app/apikey) (clique em **Criar chave de API**).
 
 4. Instale as dependências Python:
 ```bash
