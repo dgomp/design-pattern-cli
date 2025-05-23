@@ -106,27 +106,4 @@ class PatternRecommender:
             except json.JSONDecodeError as e:
                 return {'error': f'Erro ao processar a resposta do modelo: {str(e)}'}
         except Exception as e:
-            return {'error': f'Erro ao processar a recomendação: {str(e)}'}
-
-def main():
-    print("=== Sistema de Recomendação de Design Patterns ===")
-    recommender = PatternRecommender()
-    
-    print("\nDigite seu caso de uso (ou 'sair' para encerrar):")
-    
-    while True:
-        use_case = input("\nCaso de Uso: ")
-        
-        if use_case.lower() == 'sair':
-            break
-            
-        if use_case.strip():
-            print("\nAnalisando seu caso de uso...\n")
-            recommendation = recommender.analyze_use_case(use_case)
-            print("Recomendação:")
-            print(recommendation)
-        else:
-            print("Por favor, insira um caso de uso válido.")
-
-if __name__ == "__main__":
-    main() 
+            return {'error': f'Erro ao processar a recomendação: {str(e)}'} 
