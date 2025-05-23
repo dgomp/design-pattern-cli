@@ -100,7 +100,6 @@ class PatternRecommender:
                             pattern['confidence'] = 1
                     else:
                         raise ValueError("Valor de confiança deve ser um número")
-                # Ordena os padrões por confiança (do maior para o menor)
                 result['patterns'].sort(key=lambda x: x['confidence'], reverse=True)
                 return result
             except json.JSONDecodeError as e:
