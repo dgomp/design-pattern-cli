@@ -13,11 +13,13 @@ Este sistema utiliza Inteligência Artificial para analisar casos de uso e recom
 
 ```
 design-pattern-cli/
-├── pattern_recommender.py  # Lógica de recomendação usando Gemini API
-├── ask.py                  # Interface de linha de comando
-├── requirements.txt        # Dependências Python
-├── .env                    # Arquivo de configuração (não versionado)
-└── README.md               # Documentação do projeto
+├── main.py                # Ponto de entrada do sistema
+├── cli.py                 # Interface de linha de comando
+├── pattern_recommender.py # Lógica de recomendação usando Gemini API
+├── model_manager.py       # Gerenciamento dos modelos do Gemini
+├── requirements.txt       # Dependências Python
+├── .env                   # Arquivo de configuração (não versionado)
+└── README.md              # Documentação do projeto
 ```
 
 ## ⚙️ Requisitos
@@ -48,14 +50,16 @@ pip install -r requirements.txt
 
 ## 💻 Executando o Sistema
 
-Execute a interface de linha de comando:
+Execute o sistema:
 ```bash
-python ask.py
+python main.py
 ```
 
 ## ✨ Funcionalidades
 
-- Interface via linha de comando
+- Interface via linha de comando intuitiva
+- Seleção automática do modelo mais recente do Gemini
+- Possibilidade de trocar o modelo durante a execução
 - Análise de casos de uso usando IA generativa (Google Gemini)
 - Recomendação dos 3 Design Patterns mais apropriados
 - Porcentagem de confiança para cada recomendação
@@ -64,39 +68,45 @@ python ask.py
 
 ## 🛠️ Tecnologias Utilizadas
 
-- requests (requisições HTTP)
+- google-generativeai (API do Google Gemini)
 - python-dotenv (variáveis de ambiente)
-- Google Gemini API (IA generativa)
+- Python 3.8+
 
 ## 📦 Desenvolvimento
 
 ### Componentes
+- `main.py`: Ponto de entrada do sistema
+- `cli.py`: Interface de linha de comando
 - `pattern_recommender.py`: Implementa a lógica de recomendação usando Gemini API
-- `ask.py`: Interface de linha de comando para interação com o usuário
+- `model_manager.py`: Gerencia os modelos do Gemini e suas configurações
 
 ## 📝 Exemplo de Uso
 
 1. Execute o programa:
 ```bash
-python ask.py
+python main.py
 ```
 
-2. Digite um caso de uso, por exemplo:
+2. No menu principal, escolha a opção 1 para recomendar um padrão de design
+
+3. Digite um caso de uso, por exemplo:
 ```
 Preciso criar um sistema que permita diferentes formas de pagamento (cartão de crédito, boleto, pix) e que seja fácil adicionar novos métodos no futuro.
 ```
 
-3. O sistema retornará:
+4. O sistema retornará:
 - Os 3 Design Patterns mais apropriados
 - Porcentagem de confiança para cada padrão
 - Explicação detalhada
 - Sugestão de implementação
 
+5. Use a opção 2 do menu para trocar o modelo do Gemini, se desejar
+
 ## 💡 Dicas
-- O sistema depende de conexão com a internet para acessar a Gemini API
-- Você pode testar diferentes casos de uso para ver recomendações variadas
-- Para sair do programa, digite 'sair' quando solicitado
+- O sistema configura automaticamente o modelo mais recente do Gemini
+- Você pode trocar o modelo a qualquer momento através do menu
 - Quanto mais detalhado for seu caso de uso, melhores serão as recomendações
+- O sistema depende de conexão com a internet para acessar a Gemini API
 
 ## 🤝 Contribuindo
 1. Faça um fork do projeto

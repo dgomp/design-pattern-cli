@@ -1,30 +1,26 @@
 import os
 from dotenv import load_dotenv
 import json
-import re
-import requests
+from google.api_core import exceptions as google_exceptions
+from model_manager import ModelManager
 
 class PatternRecommender:
-    def __init__(self):
-        load_dotenv()
-        self.api_key = os.getenv('GOOGLE_API_KEY')
-        if not self.api_key:
-            raise ValueError("Chave da API do Google Gemini não encontrada. Por favor, crie um arquivo .env com GOOGLE_API_KEY=sua_chave_aqui")
-        self.api_url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent"
+    def __init__(self, model_manager):
+        self.model_manager = model_manager
+        
         self.base_prompt = """
-        Analise o seguinte caso de uso e recomende os 3 Design Patterns mais apropriados.
-        Para cada padrão, forneça:
-        1. Nome do padrão
-        2. Porcentagem de confiança (valor entre 0 e 1, onde 0.85 representa 85% de confiança)
-        3. Explicação detalhada
-        4. Sugestão de implementação
+        Você é um especialista em Design Patterns. Analise o seguinte caso de uso e recomende os 3 Design Patterns mais apropriados.
 
-        IMPORTANTE: Você DEVE retornar EXATAMENTE 3 padrões, ordenados do mais apropriado para o menos apropriado.
+        REGRAS IMPORTANTES:
+        1. Você DEVE retornar EXATAMENTE 3 padrões
+        2. A resposta DEVE ser APENAS um objeto JSON válido, sem nenhum texto adicional
+        3. Os padrões devem ser ordenados do mais apropriado para o menos apropriado
+        4. O valor de confiança deve ser um número entre 0 e 1 (ex: 0.85 para 85% de confiança)
 
         Caso de uso:
         {use_case}
 
-        Responda APENAS com um objeto JSON válido no seguinte formato, sem nenhum texto adicional:
+        Retorne APENAS o JSON abaixo, substituindo os valores de exemplo pelos seus valores reais:
         {{
             "patterns": [
                 {{
@@ -49,40 +45,41 @@ class PatternRecommender:
         }}
         """
 
+    def list_available_models(self):
+        """Lista os modelos disponíveis usando o ModelManager."""
+        return self.model_manager.list_available_models()
+
     def analyze_use_case(self, use_case: str) -> dict:
         try:
             prompt = self.base_prompt.format(use_case=use_case)
-            headers = {'Content-Type': 'application/json'}
-            data = {
-                "contents": [
-                    {"parts": [{"text": prompt}]}
-                ]
-            }
-            response = requests.post(
-                f"{self.api_url}?key={self.api_key}",
-                headers=headers,
-                json=data
-            )
-            if response.status_code != 200:
-                return {'error': f'Erro na API: {response.status_code}'}
-            response_data = response.json()
-            if 'candidates' not in response_data or not response_data['candidates']:
-                return {'error': 'Resposta inválida da API'}
-            text_response = response_data['candidates'][0]['content']['parts'][0]['text']
+            
+            response = self.model_manager.get_current_model().generate_content(prompt)
+            
+            if not response.text:
+                return {'error': 'Resposta vazia da API'}
+                
             try:
-                json_str = text_response.strip()
-                match = re.search(r'\{[\s\S]*\}', json_str)
-                if match:
-                    json_str = match.group(0)
-                else:
-                    raise ValueError("Nenhum objeto JSON encontrado na resposta do modelo.")
-                result = json.loads(json_str)
+                # Tenta limpar a resposta para garantir que seja apenas JSON
+                text = response.text.strip()
+                # Remove qualquer texto antes do primeiro {
+                start = text.find('{')
+                if start == -1:
+                    raise ValueError("Resposta não contém JSON válido")
+                text = text[start:]
+                # Remove qualquer texto depois do último }
+                end = text.rfind('}')
+                if end == -1:
+                    raise ValueError("Resposta não contém JSON válido")
+                text = text[:end+1]
+                
+                result = json.loads(text)
                 if not isinstance(result, dict) or 'patterns' not in result:
                     raise ValueError("Resposta não contém a chave 'patterns'")
                 if not isinstance(result['patterns'], list):
                     raise ValueError("'patterns' não é uma lista")
                 if len(result['patterns']) != 3:
                     raise ValueError("A resposta deve conter exatamente 3 padrões")
+                    
                 for pattern in result['patterns']:
                     if not isinstance(pattern, dict):
                         raise ValueError("Padrão inválido na lista")
@@ -100,9 +97,20 @@ class PatternRecommender:
                             pattern['confidence'] = 1
                     else:
                         raise ValueError("Valor de confiança deve ser um número")
+                        
                 result['patterns'].sort(key=lambda x: x['confidence'], reverse=True)
                 return result
+                
             except json.JSONDecodeError as e:
                 return {'error': f'Erro ao processar a resposta do modelo: {str(e)}'}
+                
+        except google_exceptions.ResourceExhausted:
+            return {'error': 'Limite de requisições da API excedido. Por favor, tente novamente mais tarde.'}
+        except google_exceptions.Unauthenticated:
+            return {'error': 'Erro de autenticação. Verifique se sua chave API está correta.'}
+        except google_exceptions.ServiceUnavailable:
+            return {'error': 'Serviço temporariamente indisponível. Por favor, tente novamente mais tarde.'}
+        except google_exceptions.GoogleAPIError as e:
+            return {'error': f'Erro da API do Google: {str(e)}'}
         except Exception as e:
-            return {'error': f'Erro ao processar a recomendação: {str(e)}'} 
+            return {'error': f'Erro ao processar a recomendação: {str(e)}'}
