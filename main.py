@@ -5,23 +5,18 @@ from pattern_recommender import PatternRecommender
 from cli import CLI
 
 def main():
-    # Carrega as variáveis de ambiente
     load_dotenv()
     
-    # Obtém a chave da API do ambiente
     api_key = os.getenv('GOOGLE_API_KEY')
     if not api_key:
         print("Erro: GOOGLE_API_KEY não encontrada nas variáveis de ambiente.")
         return
 
     try:
-        # Inicializa o gerenciador de modelos
         model_manager = ModelManager(api_key)
         
-        # Inicializa o recomendador de padrões
         recommender = PatternRecommender(model_manager)
         
-        # Inicializa e executa a interface CLI
         cli = CLI(recommender, model_manager)
         cli.run()
         

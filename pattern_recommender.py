@@ -16,6 +16,7 @@ class PatternRecommender:
         2. A resposta DEVE ser APENAS um objeto JSON válido, sem nenhum texto adicional
         3. Os padrões devem ser ordenados do mais apropriado para o menos apropriado
         4. O valor de confiança deve ser um número entre 0 e 1 (ex: 0.85 para 85% de confiança)
+        5. No primeiro resultado, ou seja, o com porcentagem de confiança maior, crie uma classe, seus métodos e propriedades como exemplo de uma implementação do Design Pattern identificado.
 
         Caso de uso:
         {use_case}
@@ -27,7 +28,13 @@ class PatternRecommender:
                     "name": "Nome do Padrão",
                     "confidence": 0.85,
                     "explanation": "Explicação detalhada",
-                    "implementation": "Sugestão de implementação"
+                    "implementation": "Sugestão de implementação",
+                    "example_code": {{
+                        "class_name": "NomeDaClasse",
+                        "properties": ["prop1", "prop2"],
+                        "methods": ["method1", "method2"],
+                        "code": "código completo da implementação"
+                    }}
                 }},
                 {{
                     "name": "Nome do Segundo Padrão",
@@ -59,14 +66,11 @@ class PatternRecommender:
                 return {'error': 'Resposta vazia da API'}
                 
             try:
-                # Tenta limpar a resposta para garantir que seja apenas JSON
                 text = response.text.strip()
-                # Remove qualquer texto antes do primeiro {
                 start = text.find('{')
                 if start == -1:
                     raise ValueError("Resposta não contém JSON válido")
                 text = text[start:]
-                # Remove qualquer texto depois do último }
                 end = text.rfind('}')
                 if end == -1:
                     raise ValueError("Resposta não contém JSON válido")

@@ -64,6 +64,11 @@ python main.py
 - Recomendação dos 3 Design Patterns mais apropriados
 - Porcentagem de confiança para cada recomendação
 - Explicação detalhada e implementação separadas para cada padrão
+- Exemplo completo de implementação para o padrão mais recomendado, incluindo:
+  - Nome da classe
+  - Lista de propriedades
+  - Lista de métodos
+  - Código completo da implementação
 - Totalmente gratuito (requer conexão com a internet e chave Gemini)
 
 ## 🛠️ Tecnologias Utilizadas
@@ -99,6 +104,11 @@ Preciso criar um sistema que permita diferentes formas de pagamento (cartão de 
 - Porcentagem de confiança para cada padrão
 - Explicação detalhada
 - Sugestão de implementação
+- Para o padrão mais recomendado:
+  - Nome da classe de exemplo
+  - Lista de propriedades
+  - Lista de métodos
+  - Código completo da implementação
 
 5. Use a opção 2 do menu para trocar o modelo do Gemini, se desejar
 
@@ -107,6 +117,7 @@ Preciso criar um sistema que permita diferentes formas de pagamento (cartão de 
 - Você pode trocar o modelo a qualquer momento através do menu
 - Quanto mais detalhado for seu caso de uso, melhores serão as recomendações
 - O sistema depende de conexão com a internet para acessar a Gemini API
+- O exemplo de código fornecido pode ser usado como base para sua implementação
 
 ## 🤝 Contribuindo
 1. Faça um fork do projeto

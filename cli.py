@@ -41,12 +41,26 @@ class CLI:
                 
             print("\nRecomendação:")
             print("-" * 50)
-            for pattern in recommendation['patterns']:
+            for i, pattern in enumerate(recommendation['patterns']):
                 print(f"\nPadrão: {pattern['name']}")
                 print(f"Confiança: {pattern['confidence']*100:.1f}%")
                 print(f"Explicação: {pattern['explanation']}")
                 print()
                 print(f"Implementação: {pattern['implementation']}")
+                
+                if i == 0 and 'example_code' in pattern:
+                    print("\nExemplo de Implementação:")
+                    print("-" * 50)
+                    print(f"Nome da Classe: {pattern['example_code']['class_name']}")
+                    print("\nPropriedades:")
+                    for prop in pattern['example_code']['properties']:
+                        print(f"- {prop}")
+                    print("\nMétodos:")
+                    for method in pattern['example_code']['methods']:
+                        print(f"- {method}")
+                    print("\nCódigo Completo:")
+                    print(pattern['example_code']['code'])
+                
                 print("-" * 50)
         except Exception as e:
             print(f"\nErro ao obter recomendação: {str(e)}") 
